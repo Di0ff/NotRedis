@@ -24,14 +24,13 @@ func (om *MyMap) Set(key, value string) error {
 	defer om.mu.Unlock()
 
 	if key == "" || value == "" {
-		om.logger.Error("Set fail: empty key or value")
+		om.logger.Error("SET fail: empty key or value")
 
 		return myError.EmptyKeyOrValue
 	}
 
 	om.data[key] = value
-	om.logger.Info("Set success")
-
+	om.logger.Info("SET success")
 	return nil
 }
 
@@ -41,28 +40,24 @@ func (om *MyMap) Get(key string) (string, error) {
 
 	value, ok := om.data[key]
 	if !ok {
-		om.logger.Error("Get fail: key not found")
-
+		om.logger.Error("GET fail: key not found")
 		return "", myError.KeyNotFound
 	}
 
-	om.logger.Info("Get success")
-
+	om.logger.Info("GET success")
 	return value, nil
 }
 
-func (om *MyMap) Delete(key string) error {
+func (om *MyMap) Del(key string) error {
 	om.mu.Lock()
 	defer om.mu.Unlock()
 
 	if _, ok := om.data[key]; !ok {
-		om.logger.Error("Delete fail: key not found")
-
+		om.logger.Error("DEL fail: key not found")
 		return myError.KeyNotFound
 	}
 
 	delete(om.data, key)
-	om.logger.Info("Delete success")
-
+	om.logger.Info("DEL success")
 	return nil
 }

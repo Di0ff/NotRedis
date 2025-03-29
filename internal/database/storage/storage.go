@@ -8,7 +8,7 @@ import (
 type Engine interface {
 	Set(key, value string) error
 	Get(key string) (string, error)
-	Delete(key string) error
+	Del(key string) error
 }
 
 type Storage struct {
@@ -36,12 +36,10 @@ func (s *Storage) Set(key, value string) error {
 	err := s.engine.Set(key, value)
 	if err != nil {
 		s.logger.Error("Set command fail")
-
 		return err
 	}
 
 	s.logger.Info("Set command success")
-
 	return nil
 }
 
@@ -49,24 +47,20 @@ func (s *Storage) Get(key string) (string, error) {
 	value, err := s.engine.Get(key)
 	if err != nil {
 		s.logger.Error("Get command fail")
-
 		return "", err
 	}
 
 	s.logger.Info("Get command success")
-
 	return value, nil
 }
 
-func (s *Storage) Delete(key string) error {
-	err := s.engine.Delete(key)
+func (s *Storage) Del(key string) error {
+	err := s.engine.Del(key)
 	if err != nil {
-		s.logger.Error("Delete command fail")
-
+		s.logger.Error("Del command fail")
 		return err
 	}
 
-	s.logger.Info("Delete command success")
-
+	s.logger.Info("Del command success")
 	return nil
 }

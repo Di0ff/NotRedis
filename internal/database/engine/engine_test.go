@@ -55,7 +55,7 @@ func TestMyMap(t *testing.T) {
 			name: "Delete success",
 			action: func(m *MyMap) error {
 				m.Set("key2", "value2")
-				return m.Delete("key2")
+				return m.Del("key2")
 			},
 			key:     "key2",
 			wantErr: nil,
@@ -63,7 +63,7 @@ func TestMyMap(t *testing.T) {
 		{
 			name: "Delete non-existent key",
 			action: func(m *MyMap) error {
-				return m.Delete("nonexistent")
+				return m.Del("nonexistent")
 			},
 			key:     "nonexistent",
 			wantErr: myError.KeyNotFound,
@@ -78,7 +78,6 @@ func TestMyMap(t *testing.T) {
 				t.Errorf("%s error = %v, wantErr %v", tt.name, err, tt.wantErr)
 				return
 			}
-
 			if err == nil && tt.name == "Set and Get success" {
 				got, err := m.Get(tt.key)
 				if err != nil || got != tt.wantValue {
@@ -106,17 +105,15 @@ func TestMyMapConcurrency(t *testing.T) {
 		}
 		done <- true
 	}()
-
 	go func() {
 		for i := 0; i < 100; i++ {
 			m.Get("key")
 		}
 		done <- true
 	}()
-
 	go func() {
 		for i := 0; i < 100; i++ {
-			m.Delete("key")
+			m.Del("key")
 		}
 		done <- true
 	}()

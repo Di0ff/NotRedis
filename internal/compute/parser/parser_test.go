@@ -80,7 +80,6 @@ func TestParse(t *testing.T) {
 				t.Errorf("Parse() error = %v, wantErr %v", err, tt.wantErr)
 				return
 			}
-
 			if err == nil {
 				if got.Type != tt.want.Type || got.Key != tt.want.Key || got.Value != tt.want.Value {
 					t.Errorf("Parse() = %v, want %v", got, tt.want)
